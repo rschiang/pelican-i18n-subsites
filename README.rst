@@ -1,5 +1,5 @@
 =======================
- I18N Subsites
+ I18n Subsites
 =======================
 
 .. image:: https://img.shields.io/github/workflow/status/pelican-plugins/i18n-subsites/build
@@ -11,10 +11,13 @@
 .. image:: https://img.shields.io/pypi/l/pelican-i18n-subsites?color=blue
   :alt: License
 
-This plugin extends the translations functionality by creating
-internationalized sub-sites for the default site.
+This plugin extends `Pelican`_’s translations functionality by creating
+internationalized sub-sites for the default site. A demo site can be seen live
+`here <http://smartass101.github.io/pelican-plugins/>`_.
 
-This plugin is designed for Pelican 3.4 and later.
+This plugin is designed for Pelican 4.5 and later.
+
+.. _Pelican: https://getpelican.com/
 
 What it does
 ============
@@ -57,12 +60,22 @@ This plugin can be installed via:
 Setting it up
 =============
 
+Either let Pelican `automatically discover`_ the plugin, or explicitly specify
+plugins via ``PLUGINS``:
+
+.. code-block:: python
+
+    PLUGINS = ['pelican.plugins.i18n_subsites', ...]
+
+.. code-block:: python
+
+    from pelican.plugins import i18n_subsites
+    PLUGINS = [i18n_subsites, ...]
+
 For each extra used language code, a language-specific settings overrides
 dictionary must be given (but can be empty) in the ``I18N_SUBSITES`` dictionary
 
 .. code-block:: python
-
-    PLUGINS = ['i18n_subsites', ...]
 
     # mapping: language_code -> settings_overrides_dict
     I18N_SUBSITES = {
@@ -78,6 +91,8 @@ You must also have the following in your pelican configuration
     JINJA_ENVIRONMENT = {
         'extensions': ['jinja2.ext.i18n'],
     }
+
+.. _automatically discover: https://docs.getpelican.com/en/latest/plugins.html#how-to-use-plugins
 
 Default and special overrides
 -----------------------------
@@ -104,6 +119,9 @@ are some that are handled in a special way:
 ``DEFAULT_LANG``
   This should not be overridden as the plugin changes it to the
   language code of each sub-site to change what is perceived as translations.
+``L10N``
+  Partially translated ``dict``s under ``L10N`` will be merged recursively with
+  the default locale instead of replaced altogether.
 
 Localizing templates
 --------------------
@@ -117,9 +135,10 @@ sub-site. There are two approaches to having the templates localized:
   localized theme. This approach means you don't have to deal with
   gettext ``*.po`` files, but it is harder to maintain over time.
 - You use only one theme and localize the templates using the
-  `jinja2.ext.i18n Jinja2 extension
-  <http://jinja.pocoo.org/docs/templates/#i18n>`_. For a kickstart
+  ``jinja2.ext.i18n`` `Jinja2 extension`_. For a kickstart
   read this `guide <docs/localizing_using_jinja2.rst>`_.
+
+.. _Jinja2 extension: https://jinja.palletsprojects.com/en/3.1.x/templates/#i18n
 
 Additional context variables
 ............................
@@ -202,21 +221,30 @@ Usage notes
 Development
 ===========
 
-- A demo and a test site is in the ``gh-pages`` branch and can be seen
-  at http://smartass101.github.io/pelican-plugins/
 - A demo site used for automated end to end testing is defined in
-  i18n_subsites/test_data.
-- Run the tests using ``python -m unittest i18n_subsites/test_i18n_subsites.py``
+  ``pelican/plugins/i18n_subsites/test_data``.
+- Run the tests using ``poetry run invoke tests``.
 
 Contributing
 ============
 
-Contributions are welcome and much appreciated. Every little bit helps. You can contribute by improving the documentation, adding missing features, and fixing bugs. You can also help out by reviewing and commenting on `existing issues`_.
+Contributions are welcome and much appreciated. Every little bit helps. You can
+contribute by improving the documentation, adding missing features, and fixing
+bugs. You can also help out by reviewing and commenting on `existing issues`_.
 
-To start contributing to this plugin, review the `Contributing to Pelican`_ documentation, beginning with the **Contributing Code** section.
+To start contributing to this plugin, review the `Contributing to Pelican`_
+documentation, beginning with the **Contributing Code** section.
 
 .. _existing issues: https://github.com/pelican-plugins/i18n-subsites/issues
 .. _Contributing to Pelican: https://docs.getpelican.com/en/latest/contribute.html
+
+Credits
+=======
+
+Originally authored by `Ondrej Grover <https://github.com/smartass101>`_,
+February 2014, and subsequently enhanced by members of the Pelican community,
+including `Poren Chiang <https://poren.tw>`_, who re-packaged it for publication
+to PyPI.
 
 License
 =======
