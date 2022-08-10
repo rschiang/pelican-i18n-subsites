@@ -5,7 +5,6 @@ This plugin is designed for Pelican 3.4 and later
 
 
 import os
-import six
 import logging
 import posixpath
 
@@ -17,7 +16,7 @@ try:
 except ImportError:
     from collections import OrderedDict
 from contextlib import contextmanager
-from six.moves.urllib.parse import urlparse
+from urllib.parse import urlparse
 
 import gettext
 import locale
@@ -401,7 +400,7 @@ def update_generators():
 def get_pelican_cls(settings):
     '''Get the Pelican class requested in settings'''
     cls = settings['PELICAN_CLASS']
-    if isinstance(cls, six.string_types):
+    if isinstance(cls, str):
         module, cls_name = cls.rsplit('.', 1)
         module = __import__(module)
         cls = getattr(module, cls_name)
