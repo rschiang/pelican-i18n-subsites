@@ -31,13 +31,13 @@ except ImportError:
 _MAIN_SETTINGS = None     # settings dict of the main Pelican instance
 _MAIN_LANG = None         # lang of the main Pelican instance
 _MAIN_SITEURL = None      # siteurl of the main Pelican instance
-_MAIN_STATIC_FILES = None # list of Static instances the main Pelican instance
-_SUBSITE_QUEUE = {}   # map: lang -> settings overrides
-_SITE_DB = OrderedDict()           # OrderedDict: lang -> siteurl
+_MAIN_STATIC_FILES = None  # list of Static instances the main Pelican instance
+_SUBSITE_QUEUE = {}          # map: lang -> settings overrides
+_SITE_DB = OrderedDict()     # OrderedDict: lang -> siteurl
 _SITES_RELPATH_DB = {}       # map: (lang, base_lang) -> relpath
 # map: generator -> list of removed contents that need interlinking
 _GENERATOR_DB = {}
-_NATIVE_CONTENT_URL_DB = {} # map: source_path -> content in its native lang
+_NATIVE_CONTENT_URL_DB = {}  # map: source_path -> content in its native lang
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -94,14 +94,15 @@ def prepare_site_db_and_overrides():
                 _MAIN_SETTINGS['CACHE_PATH'], lang)
         if 'STATIC_PATHS' not in overrides:
             overrides['STATIC_PATHS'] = []
-        if ('THEME' not in overrides and 'THEME_STATIC_DIR' not in overrides and
-                'THEME_STATIC_PATHS' not in overrides):
+        if ('THEME' not in overrides and 'THEME_STATIC_DIR' not in overrides
+                and 'THEME_STATIC_PATHS' not in overrides):
             relpath = relpath_to_site(lang, _MAIN_LANG)
             overrides['THEME_STATIC_DIR'] = posixpath.join(
                 relpath, _MAIN_SETTINGS['THEME_STATIC_DIR'])
             overrides['THEME_STATIC_PATHS'] = []
         if 'FEED_DOMAIN' not in overrides:
-            overrides['FEED_DOMAIN'] = posixpath.join(_MAIN_SETTINGS['FEED_DOMAIN'], lang)
+            overrides['FEED_DOMAIN'] = posixpath.join(
+                _MAIN_SETTINGS['FEED_DOMAIN'], lang)
         # to change what is perceived as translations
         overrides['DEFAULT_LANG'] = lang
 
@@ -252,12 +253,12 @@ def filter_contents_translations(generator):
     hiding_func = inspector.hiding_function()
     untrans_policy = inspector.untranslated_policy(default='hide')
     for (contents, other_contents) in inspector.contents_list_pairs():
-        for content in other_contents: # save any hidden native content first
-            if content.lang == current_lang: # in native lang
+        for content in other_contents:  # save any hidden native content first
+            if content.lang == current_lang:  # in native lang
                 # save the native URL attr formatted in the current locale
                 _NATIVE_CONTENT_URL_DB[content.source_path] = content.url
         for content in contents[:]:        # copy for removing in loop
-            if content.lang == current_lang: # in native lang
+            if content.lang == current_lang:  # in native lang
                 # save the native URL attr formatted in the current locale
                 _NATIVE_CONTENT_URL_DB[content.source_path] = content.url
             elif content.lang in langs_with_sites and untrans_policy != 'keep':
@@ -274,7 +275,7 @@ def install_templates_translations(generator):
     Only if the 'jinja2.ext.i18n' jinja2 extension is enabled
     the translations for the current DEFAULT_LANG are installed.
     '''
-    if 'JINJA_ENVIRONMENT' in generator.settings: # pelican 3.7+
+    if 'JINJA_ENVIRONMENT' in generator.settings:  # pelican 3.7+
         jinja_extensions = generator.settings['JINJA_ENVIRONMENT'].get(
             'extensions', [])
     else:
@@ -357,14 +358,14 @@ def interlink_static_files(generator):
     '''Add links to static files in the main site if necessary'''
     if generator.settings['STATIC_PATHS'] != []:
         return                               # customized STATIC_PATHS
-    try: # minimize attr lookup
+    try:  # minimize attr lookup
         static_content = generator.context['static_content']
     except KeyError:
         static_content = generator.context['filenames']
     relpath = relpath_to_site(generator.settings['DEFAULT_LANG'], _MAIN_LANG)
     for staticfile in _MAIN_STATIC_FILES:
         if staticfile.get_relative_source_path() not in static_content:
-            staticfile = copy(staticfile) # prevent override in main site
+            staticfile = copy(staticfile)  # prevent override in main site
             staticfile.override_url = posixpath.join(relpath, staticfile.url)
             try:
                 generator.add_source_path(staticfile, static=True)
@@ -415,10 +416,10 @@ def create_dirs(settings):
     _LOGGER.debug("create dirs {} in '{}' ".format(dirs, toutput))
 
     if not os.path.exists(toutput):
-       os.makedirs(toutput)
+        os.makedirs(toutput)
 
     for dir in dirs:
-        src=os.path.join(soutput, dir)
+        src = os.path.join(soutput, dir)
         if not os.path.exists(src):
             os.makedirs(src)
 
@@ -428,7 +429,7 @@ def create_dirs(settings):
             if not os.path.exists(destpathloc):
                 os.makedirs(destpathloc)
 
-        dest=os.path.join(toutput, dir)
+        dest = os.path.join(toutput, dir)
         if not os.path.exists(dest):
             _LOGGER.debug(" create link '{}' -> '{}'".format(dest, src))
             os.symlink(src, dest)

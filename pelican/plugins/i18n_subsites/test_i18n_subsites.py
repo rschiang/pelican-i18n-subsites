@@ -132,8 +132,7 @@ class TestFullRun(unittest.TestCase):
             'OUTPUT_PATH': output_path,
             'CACHE_PATH': cache_path,
             'PLUGINS': [i18ns],
-            }
-        )
+        })
         pelican = Pelican(settings)
         pelican.run()
 
@@ -148,12 +147,13 @@ class TestFullRun(unittest.TestCase):
         self.assertIn(
             'example.com/test/author/the-tester.html">The Tester</a>',
             root_index
-            )
+        )
         self.assertIn(
             'example.com/test/de/author/der-tester.html">Der Tester</a>',
             de_index
-            )
+        )
 
         # Check jinja2 translation.
         self.assertIn('Welcome to our Testing site | Acme Ltd', root_index)
-        self.assertIn('Willkommen Sie zur unserer Testseite | Acme AG', de_index)
+        self.assertIn('Willkommen Sie zur unserer Testseite | Acme AG',
+                      de_index)
