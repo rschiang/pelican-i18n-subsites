@@ -33,6 +33,7 @@ THEME = 'localized_theme'
 JINJA_ENVIRONMENT = {'extensions': ['jinja2.ext.i18n']}
 
 from blinker import signal
+
 tmpsig = signal('tmpsig')
 I18N_FILTER_SIGNALS = [tmpsig]
 
@@ -46,7 +47,7 @@ L10N = {
         'NAME': 'Acme',
         # This is translated.
         'INCORPORATION': 'Ltd'
-        },
+    },
 }
 
 # Translation for pelicanconf.py settings.
@@ -58,7 +59,7 @@ I18N_SUBSITES = {
             'COMPANY': {'INCORPORATION': 'AG'}
         },
         'LOCALE': 'de_DE.UTF-8',
-        },
+    },
     'cz': {
         'AUTHOR': 'Test Testovič',
         'L10N': {
@@ -66,5 +67,5 @@ I18N_SUBSITES = {
         },
         'I18N_UNTRANSLATED_PAGES': 'remove',
         'I18N_UNTRANSLATED_ARTICLES': 'keep',
-        },
-    }
+    },
+}

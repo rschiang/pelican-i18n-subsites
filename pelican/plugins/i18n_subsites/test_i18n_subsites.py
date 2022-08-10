@@ -1,15 +1,16 @@
 '''Unit tests for the i18n_subsites plugin'''
 
-import os
 import locale
-import unittest
-from tempfile import mkdtemp
+import os
 from shutil import rmtree
+from tempfile import mkdtemp
+import unittest
+
+from pelican import Pelican
+from pelican.settings import read_settings
+from pelican.tests.support import get_settings
 
 from . import i18n_subsites as i18ns
-from pelican import Pelican
-from pelican.tests.support import get_settings
-from pelican.settings import read_settings
 
 
 class TestTemporaryLocale(unittest.TestCase):

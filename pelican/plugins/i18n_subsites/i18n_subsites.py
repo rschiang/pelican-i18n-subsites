@@ -4,24 +4,21 @@ This plugin is designed for Pelican 3.4 and later
 """
 
 
-import os
-import logging
-import posixpath
-
-from copy import copy
-from itertools import chain
-from operator import attrgetter
 from collections import OrderedDict
 from contextlib import contextmanager
-from urllib.parse import urlparse
-
+from copy import copy
 import gettext
+from itertools import chain
 import locale
+import logging
+from operator import attrgetter
+import os
+import posixpath
+from urllib.parse import urlparse
 
 from pelican import signals
 from pelican.generators import ArticlesGenerator, PagesGenerator
 from pelican.settings import configure_settings
-
 
 # Global vars
 _MAIN_SETTINGS = None     # settings dict of the main Pelican instance
