@@ -1,6 +1,15 @@
 =======================
- I18N Sub-sites Plugin
+ I18N Subsites
 =======================
+
+.. image:: https://img.shields.io/github/workflow/status/pelican-plugins/i18n-subsites/build
+  :target: https://github.com/pelican-plugins/i18n-subsites/actions
+  :alt: Build Status
+.. image:: https://img.shields.io/pypi/v/pelican-i18n-subsites
+  :target: https://pypi.org/project/pelican-i18n-subsites/
+  :alt: PyPI Version
+.. image:: https://img.shields.io/pypi/l/pelican-i18n-subsites?color=blue
+  :alt: License
 
 This plugin extends the translations functionality by creating
 internationalized sub-sites for the default site.
@@ -36,6 +45,15 @@ What it does
    (sub-)sites.
 4. Finally, all the output is written.
 
+Installation
+============
+
+This plugin can be installed via:
+
+.. code-block:: shell
+
+    python -m pip install pelican-i18n-subsites
+
 Setting it up
 =============
 
@@ -49,7 +67,7 @@ dictionary must be given (but can be empty) in the ``I18N_SUBSITES`` dictionary
     # mapping: language_code -> settings_overrides_dict
     I18N_SUBSITES = {
         'cz': {
-	    'SITENAME': 'Hezkej blog',
+	        'SITENAME': 'Hezkej blog',
 	    }
 	}
 
@@ -60,8 +78,6 @@ You must also have the following in your pelican configuration
     JINJA_ENVIRONMENT = {
         'extensions': ['jinja2.ext.i18n'],
     }
-
-
 
 Default and special overrides
 -----------------------------
@@ -103,7 +119,7 @@ sub-site. There are two approaches to having the templates localized:
 - You use only one theme and localize the templates using the
   `jinja2.ext.i18n Jinja2 extension
   <http://jinja.pocoo.org/docs/templates/#i18n>`_. For a kickstart
-  read this `guide <./localizing_using_jinja2.rst>`_.
+  read this `guide <docs/localizing_using_jinja2.rst>`_.
 
 Additional context variables
 ............................
@@ -143,7 +159,7 @@ Pelican internals for local siteurls), so you may rather use something
 like ``{{ SITEURL }}/{{ relpath_to_site(DEFAULT_LANG, main_lang }}``
 to link to the main site.
 
-This short `howto <./implementing_language_buttons.rst>`_ shows two
+This short `howto <docs/implementing_language_buttons.rst>`_ shows two
 example implementations of language buttons.
 
 Additional config option
@@ -190,4 +206,19 @@ Development
   at http://smartass101.github.io/pelican-plugins/
 - A demo site used for automated end to end testing is defined in
   i18n_subsites/test_data.
-- Run the tests using `python -m unittest i18n_subsites/test_i18n_subsites.py`
+- Run the tests using ``python -m unittest i18n_subsites/test_i18n_subsites.py``
+
+Contributing
+============
+
+Contributions are welcome and much appreciated. Every little bit helps. You can contribute by improving the documentation, adding missing features, and fixing bugs. You can also help out by reviewing and commenting on `existing issues`_.
+
+To start contributing to this plugin, review the `Contributing to Pelican`_ documentation, beginning with the **Contributing Code** section.
+
+.. _existing issues: https://github.com/pelican-plugins/i18n-subsites/issues
+.. _Contributing to Pelican: https://docs.getpelican.com/en/latest/contribute.html
+
+License
+=======
+
+This project is licensed under the AGPL-3.0 license.
