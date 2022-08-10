@@ -1,4 +1,4 @@
-'''Unit tests for the i18n_subsites plugin'''
+"""Unit tests for the i18n_subsites plugin"""
 
 import locale
 import os
@@ -14,78 +14,79 @@ from . import i18n_subsites as i18ns
 
 
 class TestTemporaryLocale(unittest.TestCase):
-    '''Test the temporary locale context manager'''
+    """Test the temporary locale context manager"""
 
     def test_locale_restored(self):
-        '''Test that the locale is restored after exiting context'''
+        """Test that the locale is restored after exiting context"""
         orig_locale = locale.setlocale(locale.LC_ALL)
         with i18ns.temporary_locale():
-            locale.setlocale(locale.LC_ALL, 'C')
-            self.assertEqual(locale.setlocale(locale.LC_ALL), 'C')
+            locale.setlocale(locale.LC_ALL, "C")
+            self.assertEqual(locale.setlocale(locale.LC_ALL), "C")
         self.assertEqual(locale.setlocale(locale.LC_ALL), orig_locale)
 
     def test_temp_locale_set(self):
-        '''Test that the temporary locale is set'''
-        with i18ns.temporary_locale('C'):
-            self.assertEqual(locale.setlocale(locale.LC_ALL), 'C')
+        """Test that the temporary locale is set"""
+        with i18ns.temporary_locale("C"):
+            self.assertEqual(locale.setlocale(locale.LC_ALL), "C")
 
 
 class TestSettingsManipulation(unittest.TestCase):
-    '''Test operations on settings dict'''
+    """Test operations on settings dict"""
 
     def setUp(self):
-        '''Prepare default settings'''
+        """Prepare default settings"""
         self.settings = get_settings()
 
     def test_get_pelican_cls_class(self):
-        '''Test that we get class given as an object'''
-        self.settings['PELICAN_CLASS'] = object
+        """Test that we get class given as an object"""
+        self.settings["PELICAN_CLASS"] = object
         cls = i18ns.get_pelican_cls(self.settings)
         self.assertIs(cls, object)
 
     def test_get_pelican_cls_str(self):
-        '''Test that we get correct class given by string'''
+        """Test that we get correct class given by string"""
         cls = i18ns.get_pelican_cls(self.settings)
         self.assertIs(cls, Pelican)
 
 
 class TestSitesRelpath(unittest.TestCase):
-    '''Test relative path between sites generation'''
+    """Test relative path between sites generation"""
 
     def setUp(self):
-        '''Generate some sample siteurls'''
-        self.siteurl = 'http://example.com'
-        i18ns._SITE_DB['en'] = self.siteurl
-        i18ns._SITE_DB['de'] = self.siteurl + '/de'
+        """Generate some sample siteurls"""
+        self.siteurl = "http://example.com"
+        i18ns._SITE_DB["en"] = self.siteurl
+        i18ns._SITE_DB["de"] = self.siteurl + "/de"
 
     def tearDown(self):
-        '''Remove sites from db'''
+        """Remove sites from db"""
         i18ns._SITE_DB.clear()
 
     def test_get_site_path(self):
-        '''Test getting the path within a site'''
-        self.assertEqual(i18ns.get_site_path(self.siteurl), '/')
-        self.assertEqual(i18ns.get_site_path(self.siteurl + '/de'), '/de')
+        """Test getting the path within a site"""
+        self.assertEqual(i18ns.get_site_path(self.siteurl), "/")
+        self.assertEqual(i18ns.get_site_path(self.siteurl + "/de"), "/de")
 
     def test_relpath_to_site(self):
-        '''Test getting relative paths between sites'''
-        self.assertEqual(i18ns.relpath_to_site('en', 'de'), 'de')
-        self.assertEqual(i18ns.relpath_to_site('de', 'en'), '..')
+        """Test getting relative paths between sites"""
+        self.assertEqual(i18ns.relpath_to_site("en", "de"), "de")
+        self.assertEqual(i18ns.relpath_to_site("de", "en"), "..")
 
 
 class TestRegistration(unittest.TestCase):
-    '''Test plugin registration'''
+    """Test plugin registration"""
 
     def test_return_on_missing_signal(self):
-        '''Test return on missing required signal'''
-        i18ns._SIGNAL_HANDLERS_DB['tmp_sig'] = None
+        """Test return on missing required signal"""
+        i18ns._SIGNAL_HANDLERS_DB["tmp_sig"] = None
         i18ns.register()
-        self.assertNotIn(id(i18ns.save_generator),
-                         i18ns.signals.generator_init.receivers)
-        del i18ns._SIGNAL_HANDLERS_DB['tmp_sig']
+        self.assertNotIn(
+            id(i18ns.save_generator), i18ns.signals.generator_init.receivers
+        )
+        del i18ns._SIGNAL_HANDLERS_DB["tmp_sig"]
 
     def test_registration(self):
-        '''Test registration of all signal handlers'''
+        """Test registration of all signal handlers"""
         i18ns.register()
         for sig_name, handler in i18ns._SIGNAL_HANDLERS_DB.items():
             sig = getattr(i18ns.signals, sig_name)
@@ -95,7 +96,7 @@ class TestRegistration(unittest.TestCase):
 
 
 class TestFullRun(unittest.TestCase):
-    '''Test running Pelican with the Plugin'''
+    """Test running Pelican with the Plugin"""
 
     def cleanDirs(self, dirs):
         """
@@ -109,7 +110,7 @@ class TestFullRun(unittest.TestCase):
         Return the text content of file.
         """
         path = os.path.join(base, target)
-        with open(path, 'r') as stream:
+        with open(path, "r") as stream:
             return stream.read()
 
     def test_sites_generation(self):
@@ -120,41 +121,41 @@ class TestFullRun(unittest.TestCase):
         enabled language in I18N_SUBSITES
         from i18n_subsites/test_data/pelicanconf.py
         """
-        output_path = mkdtemp(prefix='pelicantests.')
-        cache_path = mkdtemp(prefix='pelican_cache.')
+        output_path = mkdtemp(prefix="pelicantests.")
+        cache_path = mkdtemp(prefix="pelican_cache.")
         self.addCleanup(self.cleanDirs, [output_path, cache_path])
 
         base_path = os.path.dirname(os.path.abspath(__file__))
-        base_path = os.path.join(base_path, 'test_data')
-        content_path = os.path.join(base_path, 'content')
-        settings_path = os.path.join(base_path, 'pelicanconf.py')
-        settings = read_settings(path=settings_path, override={
-            'PATH': content_path,
-            'OUTPUT_PATH': output_path,
-            'CACHE_PATH': cache_path,
-            'PLUGINS': [i18ns],
-        })
+        base_path = os.path.join(base_path, "test_data")
+        content_path = os.path.join(base_path, "content")
+        settings_path = os.path.join(base_path, "pelicanconf.py")
+        settings = read_settings(
+            path=settings_path,
+            override={
+                "PATH": content_path,
+                "OUTPUT_PATH": output_path,
+                "CACHE_PATH": cache_path,
+                "PLUGINS": [i18ns],
+            },
+        )
         pelican = Pelican(settings)
         pelican.run()
 
         root_deploy = os.listdir(output_path)
-        self.assertIn('de', root_deploy)
-        self.assertIn('cz', root_deploy)
+        self.assertIn("de", root_deploy)
+        self.assertIn("cz", root_deploy)
 
-        root_index = self.getContent(output_path, 'index.html')
-        de_index = self.getContent(output_path, 'de/index.html')
+        root_index = self.getContent(output_path, "index.html")
+        de_index = self.getContent(output_path, "de/index.html")
 
         # Check pelicanconf,py translation.
         self.assertIn(
-            'example.com/test/author/the-tester.html">The Tester</a>',
-            root_index
+            'example.com/test/author/the-tester.html">The Tester</a>', root_index
         )
         self.assertIn(
-            'example.com/test/de/author/der-tester.html">Der Tester</a>',
-            de_index
+            'example.com/test/de/author/der-tester.html">Der Tester</a>', de_index
         )
 
         # Check jinja2 translation.
-        self.assertIn('Welcome to our Testing site | Acme Ltd', root_index)
-        self.assertIn('Willkommen Sie zur unserer Testseite | Acme AG',
-                      de_index)
+        self.assertIn("Welcome to our Testing site | Acme Ltd", root_index)
+        self.assertIn("Willkommen Sie zur unserer Testseite | Acme AG", de_index)
