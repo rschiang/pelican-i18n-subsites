@@ -11,10 +11,7 @@ import posixpath
 from copy import copy
 from itertools import chain
 from operator import attrgetter
-try:
-    from collections.abc import OrderedDict
-except ImportError:
-    from collections import OrderedDict
+from collections import OrderedDict
 from contextlib import contextmanager
 from urllib.parse import urlparse
 
