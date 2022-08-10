@@ -5,4 +5,4 @@ A translated article
 :date: 2014-09-13
 
 A simple article with a translation.
-Here is a link to `some image <{filename}/images/img.png>`_.
+Here is a link to `some image <{static}/images/img.png>`_.

@@ -3,7 +3,6 @@
 import os
 import locale
 import unittest
-import subprocess
 from tempfile import mkdtemp
 from shutil import rmtree
 
@@ -82,6 +81,7 @@ class TestRegistration(unittest.TestCase):
         i18ns.register()
         self.assertNotIn(id(i18ns.save_generator),
                          i18ns.signals.generator_init.receivers)
+        del i18ns._SIGNAL_HANDLERS_DB['tmp_sig']
 
     def test_registration(self):
         '''Test registration of all signal handlers'''
