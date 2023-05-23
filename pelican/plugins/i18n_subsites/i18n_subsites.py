@@ -400,6 +400,7 @@ def get_pelican_cls(settings):
 
 def create_dirs(settings):
     dirs = settings.get("I18N_LINK_DIRS") or []
+    dirs_relative = settings.get("I18N_LINK_RELATIVE") or False
     if not dirs:
         return
 
@@ -407,6 +408,7 @@ def create_dirs(settings):
     soutput = os.path.split(toutput)[0]
 
     _LOGGER.debug("create dirs {} in '{}' ".format(dirs, toutput))
+    _LOGGER.debug("use relative links {}".format(dirs_relative))
 
     if not os.path.exists(toutput):
         os.makedirs(toutput)
@@ -424,8 +426,13 @@ def create_dirs(settings):
 
         dest = os.path.join(toutput, dir)
         if not os.path.exists(dest):
-            _LOGGER.debug(" create link '{}' -> '{}'".format(dest, src))
-            os.symlink(src, dest)
+            if dirs_relative:
+                rel = os.path.relpath(src, os.path.split(dest)[0])
+                _LOGGER.debug(" create link '{}' -> '{}'".format(dest, rel))
+                os.symlink(rel, dest)
+            else:
+                _LOGGER.debug(" create link '{}' -> '{}'".format(dest, src))
+                os.symlink(src, dest)
 
 
 def create_next_subsite(pelican_obj):
