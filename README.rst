@@ -2,13 +2,14 @@
  I18n Subsites
 =======================
 
-.. image:: https://img.shields.io/github/workflow/status/pelican-plugins/i18n-subsites/build
-  :target: https://github.com/pelican-plugins/i18n-subsites/actions
+.. image:: https://img.shields.io/github/actions/workflow/status/rschiang/pelican-i18n-subsites/main.yml
+  :target: https://github.com/rschiang/pelican-i18n-subsites/actions
   :alt: Build Status
 .. image:: https://img.shields.io/pypi/v/pelican-i18n-subsites
   :target: https://pypi.org/project/pelican-i18n-subsites/
   :alt: PyPI Version
 .. image:: https://img.shields.io/pypi/l/pelican-i18n-subsites?color=blue
+  :target: LICENSE
   :alt: License
 
 This plugin extends `Pelican`_’s translations functionality by creating
