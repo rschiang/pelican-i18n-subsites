@@ -188,6 +188,8 @@ If you use plugins like  ``photos``, ``thumbnailer`` and want to prevent
 the system from copying the files into each language directory, it is possible
 to set a list of directories in the variable ``I18N_LINK_DIRS``.
 For each path a symbolic link is created which links to the original directory.
+If you set variable ``I18N_LINK_RELATIVE`` to true, the symbolic links will be
+created as relative links.
 
 .. code-block:: python
 
